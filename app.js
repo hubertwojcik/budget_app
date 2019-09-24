@@ -42,7 +42,17 @@ const UIController = (function () {
 //GLOBAL APP CONTROLLER
 const controller = (function (budgetCtrl, UICtrl) {
 
- let DOM = UICtrl.getDOMstrings();
+ const setupEventListeners = function () {
+  let DOM = UICtrl.getDOMstrings();
+
+  document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem)
+
+  document.addEventListener('keypress', function (e) {
+   if (e.keyCode === 13 || e.which === 13) {
+    ctrlAddItem()
+   }
+  })
+ }
 
  const ctrlAddItem = function () {
 
@@ -61,17 +71,13 @@ const controller = (function (budgetCtrl, UICtrl) {
 
  }
 
-
- document.querySelector(DOM.inputBtn).addEventListener('click', ctrlAddItem)
-
- document.addEventListener('keypress', function (e) {
-  if (e.keyCode === 13 || e.which === 13) {
-
-   ctrlAddItem()
-
+ return {
+  init: function () {
+   setupEventListeners()
   }
+ }
 
-
- })
 
 })(budgetController, UIController)
+
+controller.init();
