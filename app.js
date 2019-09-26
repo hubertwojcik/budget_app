@@ -13,6 +13,8 @@ const budgetController = (function () {
   this.description = description;
   this.value = value;
  }
+
+
  //An object with all incomes or expenses 
  const data = {
   allItems: {
@@ -23,10 +25,39 @@ const budgetController = (function () {
    exp: 0, //Total amount of expenses
    inc: 0, //Total amount of incomes 
   }
+ };
+
+
+ return {
+  addItem: function (type, des, val) {
+   let newItem, ID;
+   //Create new ID
+   if (data.allItems[type].length > 0) {
+    ID = data.allItems[type][data.allItems[type].length - 1].id + 1;
+   } else {
+    ID = 0
+   }
+   //  Create new item basen od 'inc' or 'exp' type
+   if (type === 'exp') {
+    newItem = new Expense(ID, des, val);
+   } else if (type === 'inc') {
+    newItem = new Income(ID, des, val)
+   }
+   //Push it into our data structure
+   data.allItems[type].push(newItem);
+   //return new element
+   return newItem;
+  },
+  testing: function () {
+   console.log(data)
+  }
 
  }
 
 })()
+
+
+
 
 //UI CONTROLLER
 const UIController = (function () {
@@ -55,10 +86,12 @@ const UIController = (function () {
   }
 
  }
-
-
-
 })()
+
+
+
+
+
 
 //GLOBAL APP CONTROLLER
 const controller = (function (budgetCtrl, UICtrl) {
@@ -76,13 +109,12 @@ const controller = (function (budgetCtrl, UICtrl) {
  }
 
  const ctrlAddItem = function () {
-
+  let input, newItem;
   // 1. Get the filled input data
 
-  let input = UICtrl.getInput();
-  console.log(input);
-
+  input = UICtrl.getInput();
   // 2. Add the item to the budget controller
+  newItem = budgetController.addItem(input.type, input.description, input.value) //3 parameters , ADDITEM return an object
 
   // 3. Add the item to the UI
 
