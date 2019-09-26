@@ -1,15 +1,36 @@
 //BUDGET CONTROLLER
 const budgetController = (function () {
 
- //some code
 
+ const Expense = function (id, description, value) {
+  this.id = id;
+  this.description = description;
+  this.value = value;
+ }
+
+ const Income = function (id, description, value) {
+  this.id = id;
+  this.description = description;
+  this.value = value;
+ }
+ //An object with all incomes or expenses 
+ const data = {
+  allItems: {
+   exp: [], //Array for every exp
+   inc: [] //Array for every incom
+  },
+  totals: {
+   exp: 0, //Total amount of expenses
+   inc: 0, //Total amount of incomes 
+  }
+
+ }
 
 })()
 
-
 //UI CONTROLLER
 const UIController = (function () {
-
+ //Storing querSelectors
  let DOMstrings = {
   inputType: '.add__type',
   inputDescription: '.add__description',
@@ -17,7 +38,7 @@ const UIController = (function () {
   inputBtn: '.add__btn'
  }
 
- return {
+ return { //We return a function, which returns values from fields
   getInput: function () {
 
    return {
