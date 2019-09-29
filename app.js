@@ -104,6 +104,20 @@ const UIController = (function () {
    document.querySelector(element).insertAdjacentHTML('beforeend', newHtml)
   },
 
+  clearFields: function () {
+   let fields, fieldsArray;
+
+   fields = document.querySelectorAll(DOMstrings.inputDescription + ', ' + DOMstrings.inputValue);
+
+   fieldsArray = Array.prototype.slice.call(fields)
+
+   fieldsArray.forEach(function (current) {
+    current.value = '';
+   })
+
+   fieldsArray[0].focus();
+
+  },
 
   getDOMstrings: function () { // we return private DOMstrings to public, to use it in global App controller
    return DOMstrings;
@@ -141,7 +155,11 @@ const controller = (function (budgetCtrl, UICtrl) {
   newItem = budgetController.addItem(input.type, input.description, input.value) //3 parameters , ADDITEM return an object
 
   // 3. Add the item to the UI
-  UICtrl.addListItem(newItem, input.type)
+  UICtrl.addListItem(newItem, input.type);
+
+  //3.5 Clear the fields
+  UICtrl.clearFields();
+
   // 4. calculate the budget
 
   // 5. Display the budget
