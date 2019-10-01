@@ -32,7 +32,7 @@ const budgetController = (function () {
  const calculateTotal = function (type) {
   let sum = 0;
   data.allItems[type].forEach(function (current) {
-   sum = +current.value;
+   sum += current.value;
   })
   data.totals[type] = sum;
  }
@@ -160,6 +160,15 @@ const UIController = (function () {
    document.querySelector(element).insertAdjacentHTML('beforeend', newHtml)
   },
 
+
+  deleteListItem: function (selectorID) {
+
+   let el = document.getElementById(selectorID)
+   el.parentNode.removeChild(el)
+
+  },
+
+
   clearFields: function () {
    let fields, fieldsArray;
 
@@ -265,11 +274,11 @@ const controller = (function (budgetCtrl, UICtrl) {
    //1. Delete the item from the data structure
    budgetCtrl.deleteItem(type, ID)
    //2. Delete the item from the UI
-
+   UICtrl.deleteListItem(itemID)
    //3.Update and show new the new budget
-
+   updateBudget()
   }
-  console.log(itemID);
+
 
  }
 
