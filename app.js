@@ -150,6 +150,9 @@ const budgetController = (function () {
 
 
 
+
+
+
 //UI CONTROLLER
 const UIController = (function () {
  //Storing querSelectors
@@ -164,7 +167,8 @@ const UIController = (function () {
   incomeLabel: '.budget__income--value',
   expenseLabel: '.budget__expenses--value',
   percentageLabel: '.budget__expenses--percentage',
-  container: '.container'
+  container: '.container',
+  expensesPercLabel: '.item__percentage'
  }
 
  return { //We return a function, which returns values from fields
@@ -237,8 +241,39 @@ const UIController = (function () {
    } else {
     document.querySelector(DOMstrings.percentageLabel).textContent = `----`
    }
+  },
+
+
+  displayPercentages: function (percentages) {
+   let fields = [...document.querySelectorAll(DOMstrings.expensesPercLabel)];
+
+   fields.forEach(function (current, index) {
+    if (percentages[index] > 0) {
+     current.textContent = `${percentages[index]} %`
+    } else {
+     current.textContent = `---`
+    }
+   })
+
+   // const nodeListForEach = function (list, callback) {
+   //  for (let i = 0; i < list.length; i++) {
+   //   callback(list[i], i)
+   //  }
+   // }
+
+   // nodeListForEach(fields, function (current, index) {
+
+   //  if (percentages[index] > 0) {
+   //   current.textContent = percentages[index] + '%';
+   //  } else {
+   //   current.textContent = '---'
+   //  }
+   // })
+
 
   },
+
+
 
   getDOMstrings: function () { // we return private DOMstrings to public, to use it in global App controller
    return DOMstrings;
@@ -287,7 +322,7 @@ const controller = (function (budgetCtrl, UICtrl) {
   // 2.Read percentages from the budget controller
   let percentages = budgetCtrl.getPercentages();
   //3. Update UI
-  console.log(percentages);
+  UICtrl.displayPercentages(percentages)
 
  }
 
