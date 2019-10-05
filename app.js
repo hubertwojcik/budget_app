@@ -296,12 +296,22 @@ const UIController = (function () {
    let now, months, year, month, day
    now = new Date()
 
-   month = now.getMonth()
+   month = now.getMonth();
 
    months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
    year = now.getFullYear();
    document.querySelector(DOMstrings.dateLabel).textContent = `${months[month]} ${year}`;
+  },
+
+  changeType: function () {
+
+   let fields = [...document.querySelectorAll(`${DOMstrings.inputType},${DOMstrings.inputDescription},${DOMstrings.inputValue}`)]
+
+   fields.forEach(function (cur) {
+    cur.classList.toggle('red-focus')
+   })
+   document.querySelector(DOMstrings.inputBtn).classList.toggle('red')
   },
 
   getDOMstrings: function () { // we return private DOMstrings to public, to use it in global App controller
@@ -330,6 +340,8 @@ const controller = (function (budgetCtrl, UICtrl) {
    }
   })
   document.querySelector(DOM.container).addEventListener('click', ctrlDeleteItem) // set the eventListner on the container to make a event delegation(instead of adding one eventlistener to all of the elements we are interested in we add them to a container and then let event bubble up )
+
+  document.querySelector(DOM.inputType), addEventListener('change', UICtrl.changeType)
 
  }
 
