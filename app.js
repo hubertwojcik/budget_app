@@ -6,7 +6,25 @@ const budgetController = (function () {
   this.id = id;
   this.description = description;
   this.value = value;
+  this.percentage = -1;
  }
+
+ Expense.prototype.calcPercentages = function (totalIncome) {
+
+  if (totalIncome > 0) {
+   this.percentage = Math.round((this.value / totalIncome) * 100);
+  } else {
+   this.percentage = -1;
+  }
+
+ }
+
+
+ Expense.prototype.getPercentage = function () {
+  return this.percentage;
+ }
+
+
 
  const Income = function (id, description, value) {
   this.id = id;
@@ -90,6 +108,28 @@ const budgetController = (function () {
 
 
   },
+
+  calculatePercentages: function () {
+   data.allItems.exp.forEach(function (cur) {
+    cur.calcPercentages(data.totals.inc)
+   })
+  },
+
+
+  getPercentages: function () {
+
+   const allPerc = data.allItems.exp.map(function (cur) {
+
+    return cur.getPercentage()
+
+   })
+   return allPerc
+
+  },
+
+
+
+
   getBudget: function () {
    return {
     budget: data.budget,
@@ -169,6 +209,7 @@ const UIController = (function () {
   },
 
 
+
   clearFields: function () {
    let fields, fieldsArray;
 
@@ -183,6 +224,8 @@ const UIController = (function () {
    fieldsArray[0].focus();
 
   },
+
+
 
   displayBudget: function (obj) {
    document.querySelector(DOMstrings.budgetLabel).textContent = `${obj.budget} $`
@@ -238,6 +281,16 @@ const controller = (function (budgetCtrl, UICtrl) {
 
  }
 
+ const updatePercentages = function () {
+  // 1. Calculate percentages
+  budgetCtrl.calculatePercentages();
+  // 2.Read percentages from the budget controller
+  let percentages = budgetCtrl.getPercentages();
+  //3. Update UI
+  console.log(percentages);
+
+ }
+
  const ctrlAddItem = function () {
   let input, newItem;
   // 1. Get the filled input data
@@ -255,6 +308,9 @@ const controller = (function (budgetCtrl, UICtrl) {
 
    //5. Calculate and update budget
    updateBudget();
+
+   //6. Calculate and update percentages
+   updatePercentages()
   }
 
  }
@@ -277,6 +333,8 @@ const controller = (function (budgetCtrl, UICtrl) {
    UICtrl.deleteListItem(itemID)
    //3.Update and show new the new budget
    updateBudget()
+   //4. Calculate and update percentages
+   updatePercentages()
   }
 
 
