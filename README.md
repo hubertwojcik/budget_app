@@ -1,2 +1,2 @@
 # budget_app
-## UDEMY COURSE by Jonas Schmedtmann
+## App from UDEMY COURSE by Jonas Schmedtmann
